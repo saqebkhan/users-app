@@ -77,7 +77,6 @@ export default {
         city: "",
         createdBy: "",
         paymentStatus: true,
-        // url: 'http://localhost:3000'
       },
     });
 
@@ -316,7 +315,7 @@ button[type="button"]:hover {
   width: 20px;
   height: 20px;
   border-radius: 70%;
-  border: 1px solid black;
-  background-color: rgb(255, 0, 0); /* set your desired background color */
+  border: 1px solid rgb(255, 0, 0);
+  background-color: rgb(0, 0, 0); /* set your desired background color */
 }
 </style>
