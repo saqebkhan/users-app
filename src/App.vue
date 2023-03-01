@@ -308,14 +308,14 @@ button[type="button"]:hover {
   width: 20px;
   height: 20px;
   border-radius: 70%;
-  border: 1px solid black;
-  background-color: rgb(0, 255, 153); /* set your desired background color */
+  border: 1px solid rgb(107, 102, 102);
+  background-color: rgb(0, 255, 149); 
 }
 .red {
   width: 20px;
   height: 20px;
   border-radius: 70%;
-  border: 1px solid rgb(255, 0, 0);
-  background-color: rgb(0, 0, 0); /* set your desired background color */
+  border: 1px solid rgb(0, 0, 0);
+  background-color: rgb(255, 79, 26);
 }
 </style>
