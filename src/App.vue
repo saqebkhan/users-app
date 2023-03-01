@@ -83,7 +83,7 @@ export default {
     const getUsers = async () => {
       state.loading = true;
       try {
-        const response = await axios.get("http://localhost:3000/users");
+        const response = await axios.get("https://users-api-alpha.vercel.app/users");
         state.users = response.data;
       } catch (error) {
         console.log(error);
@@ -99,11 +99,11 @@ export default {
       try {
         if (state.editedUser._id) {
           await axios.put(
-            `http://localhost:3000/users/${state.editedUser._id}`,
+            `https://users-api-alpha.vercel.app/users/${state.editedUser._id}`,
             state.editedUser
           );
         } else {
-          await axios.post("http://localhost:3000/users", state.editedUser);
+          await axios.post("https://users-api-alpha.vercel.app/users", state.editedUser);
         }
         state.isEditMode = false;
         state.editedUser = {
@@ -122,7 +122,7 @@ export default {
 
     const deleteUser = async (user) => {
       try {
-        await axios.delete(`http://localhost:3000/users/${user._id}`);
+        await axios.delete(`https://users-api-alpha.vercel.app/users/${user._id}`);
         await getUsers();
       } catch (error) {
         console.log(error);
