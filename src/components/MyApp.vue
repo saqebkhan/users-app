@@ -313,7 +313,7 @@ button:hover {
   width: 100%;
   margin-bottom: 30px;
   animation-name: back;
-  animation-duration: 0.2s;
+  animation-duration: 0.21s;
   animation-timing-function: ease-in-out;
 }
 input,
