@@ -1,10 +1,15 @@
 <template>
   <div>
-    <div class="loading-bar" v-if="state.loading">
+    <div class="loading-bar" v-if="loading">
       <div class="progress"></div>
     </div>
     <h1>Users</h1>
-    <button @click="startEdit" style="float: right;margin: 12px; margin-top: 10px;">Add User</button>
+    <button
+      @click="startEdit"
+      style="float: right; margin: 12px; margin-top: 10px"
+    >
+      Add User
+    </button>
     <table>
       <thead v-if="state.users.length">
         <tr>
@@ -37,12 +42,41 @@
         </tr>
       </tbody>
     </table>
-    <form :class="state.showForm ? 'show-form': 'remove-form'" v-if="state.isEditMode" @submit.prevent="saveUser">
-      <input id="name" v-model="state.editedUser.name" placeholder="Name" required />
-      <input id="email" v-model="state.editedUser.email" placeholder="Email" required />
-      <input id="phone" v-model="state.editedUser.phone" placeholder="Phone No." required />
-      <input id="city" v-model="state.editedUser.city" placeholder="City" required />
-      <input id="createdBy" v-model="state.editedUser.createdBy" placeholder="Created By" required />
+    <form
+      :class="state.showForm ? 'show-form' : 'remove-form'"
+      v-if="state.isEditMode"
+      @submit.prevent="saveUser"
+    >
+      <input
+        id="name"
+        v-model="state.editedUser.name"
+        placeholder="Name"
+        required
+      />
+      <input
+        id="email"
+        v-model="state.editedUser.email"
+        placeholder="Email"
+        required
+      />
+      <input
+        id="phone"
+        v-model="state.editedUser.phone"
+        placeholder="Phone No."
+        required
+      />
+      <input
+        id="city"
+        v-model="state.editedUser.city"
+        placeholder="City"
+        required
+      />
+      <input
+        id="createdBy"
+        v-model="state.editedUser.createdBy"
+        placeholder="Created By"
+        required
+      />
       <select
         id="paymentStatus"
         v-model="state.editedUser.paymentStatus"
@@ -52,15 +86,14 @@
         <option value="true">Paid</option>
         <option value="false">Unpaid</option>
       </select>
-      <button>Save</button>
-      <button @click="cancelEdit">Cancel</button>
+      <button type="submit">Save</button>
+      <button @click="cancelEdit" type="reset">Cancel</button>
     </form>
-    
   </div>
 </template>
 
 <script>
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, watch, ref } from "vue";
 import axios from "axios";
 
 export default {
@@ -68,9 +101,8 @@ export default {
   setup() {
     const state = reactive({
       users: [],
-      items:[],
+      items: [],
       isEditMode: false,
-      loading: false,
       showForm: true,
       editedUser: {
         name: "",
@@ -81,9 +113,10 @@ export default {
         paymentStatus: true,
       },
     });
+    const loading = ref(false)
 
     const getUsers = async () => {
-      state.loading = true;
+      loading.value = true;
       try {
         const response = await axios.get(
           "https://users-api-alpha.vercel.app/users"
@@ -92,7 +125,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
-      state.loading = false;
+      loading.value = false;
     };
     const editUser = (user) => {
       state.isEditMode = true;
@@ -113,20 +146,20 @@ export default {
           );
         }
         state.showForm = false;
-        setTimeout(()=> {
+        setTimeout(() => {
           state.isEditMode = false;
-          
           state.showForm = true;
-        }, 200)
-        state.editedUser = {
-          name: "",
-          email: "",
-          phone: "",
-          city: "",
-          createdBy: "",
-          paymentStatus: true,
-        };
+          state.editedUser = {
+            name: "",
+            email: "",
+            phone: "",
+            city: "",
+            createdBy: "",
+            paymentStatus: true,
+          };
+        }, 200);
         await getUsers();
+        console.log("saving")
       } catch (error) {
         console.log(error);
       }
@@ -157,23 +190,25 @@ export default {
 
     const cancelEdit = () => {
       state.showForm = false;
-      setTimeout(()=> {
+      setTimeout(() => {
         state.isEditMode = false;
-        
         state.showForm = true;
-      }, 200)
-      state.editedUser = {
-        name: "",
-        email: "",
-        phone: "",
-        city: "",
-        createdBy: "",
-        paymentStatus: true,
-      };
+        state.editedUser = {
+          name: "",
+          email: "",
+          phone: "",
+          city: "",
+          createdBy: "",
+          paymentStatus: true,
+        };
+      }, 200);
     };
-
+    watch(loading, (newValue, oldValue) => {
+      console.log(`count changed from ${oldValue} to ${newValue}`)
+    })
     onMounted(() => {
       getUsers();
+      console.log("mounted")
     });
 
     return {
@@ -184,6 +219,7 @@ export default {
       deleteUser,
       startEdit,
       cancelEdit,
+      loading,
     };
   },
 };
